@@ -1,0 +1,78 @@
+.landing-container {
+  display: flex;
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.diagonal-line {
+  position: absolute;
+  width: 2px;
+  height: 100%;
+  background-color: #000;
+  transform: skewX(-20deg);
+  left: 50%;
+  top: 0;
+}
+
+.section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.artist-section {
+  background: url("/assets/artist-bg.jpg") center/cover no-repeat;
+}
+
+.listener-section {
+  position: relative;
+}
+
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(5px);
+  transition: filter 1s ease;
+  pointer-events: none;
+}
+
+.artist-section:hover .background-video,
+.listener-section:hover .background-video {
+  filter: blur(0);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: #fff;
+}
+
+h1 {
+  font-size: 4rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+h2 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+p {
+  font-size: 1.2rem;
+  font-weight: normal;
+  margin-top: 0.5rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}

@@ -1,0 +1,404 @@
+<div class="min-h-screen bg-spotify-dark">
+  <!-- Header -->
+  <header class="bg-spotify-gray border-b border-gray-800 px-6 py-4">
+    <div class="flex justify-between items-center">
+      <div class="flex items-center space-x-4">
+        <h1 class="text-2xl font-bold text-white">
+          <i class="fas fa-music text-spotify-green mr-2"></i>
+          UTP MUSIC
+        </h1>
+        <span class="text-gray-400">Artist Dashboard</span>
+      </div>
+      <div class="flex items-center space-x-4">
+        <span class="text-gray-300">Welcome, {{ user?.name || "Artist" }}</span>
+        <button
+          (click)="logout()"
+          class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
+        >
+          <i class="fas fa-sign-out-alt mr-2"></i>Logout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex">
+    <!-- Sidebar -->
+    <nav class="w-64 bg-spotify-gray h-screen p-4">
+      <ul class="space-y-2">
+        <li>
+          <button
+            [class]="
+              'w-full text-left p-3 rounded-lg transition-colors ' +
+              (activeTab === 'overview'
+                ? 'bg-spotify-green text-white'
+                : 'text-gray-300 hover:bg-gray-700')
+            "
+            (click)="setActiveTab('overview')"
+          >
+            <i class="fas fa-home mr-3"></i>Overview
+          </button>
+        </li>
+        <li>
+          <button
+            [class]="
+              'w-full text-left p-3 rounded-lg transition-colors ' +
+              (activeTab === 'music'
+                ? 'bg-spotify-green text-white'
+                : 'text-gray-300 hover:bg-gray-700')
+            "
+            (click)="setActiveTab('music')"
+          >
+            <i class="fas fa-music mr-3"></i>My Music
+          </button>
+        </li>
+        <li>
+          <button
+            [class]="
+              'w-full text-left p-3 rounded-lg transition-colors ' +
+              (activeTab === 'upload'
+                ? 'bg-spotify-green text-white'
+                : 'text-gray-300 hover:bg-gray-700')
+            "
+            (click)="setActiveTab('upload')"
+          >
+            <i class="fas fa-upload mr-3"></i>Upload Music
+          </button>
+        </li>
+        <li>
+          <button
+            [class]="
+              'w-full text-left p-3 rounded-lg transition-colors ' +
+              (activeTab === 'analytics'
+                ? 'bg-spotify-green text-white'
+                : 'text-gray-300 hover:bg-gray-700')
+            "
+            (click)="setActiveTab('analytics')"
+          >
+            <i class="fas fa-chart-bar mr-3"></i>Analytics
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6">
+      <!-- Overview Tab -->
+      <div *ngIf="activeTab === 'overview'" class="space-y-6">
+        <h2 class="text-3xl font-bold text-white mb-6">Dashboard Overview</h2>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+          <div class="bg-spotify-gray p-6 rounded-lg">
+            <div class="flex items-center">
+              <i class="fas fa-music text-spotify-green text-2xl mr-4"></i>
+              <div>
+                <p class="text-gray-400 text-sm">Total Songs</p>
+                <p class="text-white text-2xl font-bold">{{ totalSongs }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-spotify-gray p-6 rounded-lg">
+            <div class="flex items-center">
+              <i class="fas fa-play text-blue-500 text-2xl mr-4"></i>
+              <div>
+                <p class="text-gray-400 text-sm">Total Plays</p>
+                <p class="text-white text-2xl font-bold">{{ totalPlays }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-spotify-gray p-6 rounded-lg">
+            <div class="flex items-center">
+              <i class="fas fa-heart text-red-500 text-2xl mr-4"></i>
+              <div>
+                <p class="text-gray-400 text-sm">Total Likes</p>
+                <p class="text-white text-2xl font-bold">{{ totalLikes }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-spotify-gray p-6 rounded-lg">
+            <div class="flex items-center">
+              <i class="fas fa-users text-purple-500 text-2xl mr-4"></i>
+              <div>
+                <p class="text-gray-400 text-sm">Followers</p>
+                <p class="text-white text-2xl font-bold">{{ followers }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="bg-spotify-gray p-6 rounded-lg">
+          <h3 class="text-xl font-bold text-white mb-4">Recent Activity</h3>
+          <div class="space-y-3">
+            <div
+              class="flex items-center justify-between p-3 bg-gray-800 rounded-lg"
+            >
+              <div class="flex items-center">
+                <i class="fas fa-upload text-spotify-green mr-3"></i>
+                <span class="text-white">New song "Summer Vibes" uploaded</span>
+              </div>
+              <span class="text-gray-400 text-sm">2 hours ago</span>
+            </div>
+            <div
+              class="flex items-center justify-between p-3 bg-gray-800 rounded-lg"
+            >
+              <div class="flex items-center">
+                <i class="fas fa-heart text-red-500 mr-3"></i>
+                <span class="text-white"
+                  >50 new likes on "Midnight Dreams"</span
+                >
+              </div>
+              <span class="text-gray-400 text-sm">1 day ago</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- My Music Tab -->
+      <div *ngIf="activeTab === 'music'" class="space-y-6">
+        <div class="flex justify-between items-center">
+          <h2 class="text-3xl font-bold text-white">My Music</h2>
+          <button
+            (click)="setActiveTab('upload')"
+            class="bg-spotify-green hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors"
+          >
+            <i class="fas fa-plus mr-2"></i>Add New Song
+          </button>
+        </div>
+
+        <!-- Music List -->
+        <div class="bg-spotify-gray rounded-lg overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="bg-gray-800">
+                <tr>
+                  <th class="text-left p-4 text-gray-400">#</th>
+                  <th class="text-left p-4 text-gray-400">Title</th>
+                  <th class="text-left p-4 text-gray-400">Album</th>
+                  <th class="text-left p-4 text-gray-400">Genre</th>
+                  <th class="text-left p-4 text-gray-400">Duration</th>
+                  <th class="text-left p-4 text-gray-400">Plays</th>
+                  <th class="text-left p-4 text-gray-400">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let song of songs; let i = index"
+                  class="border-b border-gray-700 hover:bg-gray-800 transition-colors"
+                >
+                  <td class="p-4 text-gray-400">{{ i + 1 }}</td>
+                  <td class="p-4">
+                    <div class="flex items-center">
+                      <div
+                        class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded mr-3 flex items-center justify-center"
+                      >
+                        <i class="fas fa-music text-white"></i>
+                      </div>
+                      <div>
+                        <p class="text-white font-medium">{{ song.title }}</p>
+                        <p class="text-gray-400 text-sm">{{ song.artist }}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-4 text-gray-300">{{ song.album }}</td>
+                  <td class="p-4 text-gray-300">{{ song.genre }}</td>
+                  <td class="p-4 text-gray-300">{{ song.duration }}</td>
+                  <td class="p-4 text-gray-300">{{ song.plays }}</td>
+                  <td class="p-4">
+                    <div class="flex space-x-2">
+                      <button class="text-blue-500 hover:text-blue-400 p-2">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="text-red-500 hover:text-red-400 p-2">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="songs.length === 0">
+                  <td colspan="7" class="text-center p-8 text-gray-400">
+                    <i class="fas fa-music text-4xl mb-4"></i>
+                    <p>
+                      No songs uploaded yet. Start by uploading your first
+                      track!
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upload Music Tab -->
+      <div *ngIf="activeTab === 'upload'" class="space-y-6">
+        <h2 class="text-3xl font-bold text-white mb-6">Upload New Music</h2>
+
+        <div class="bg-spotify-gray p-6 rounded-lg">
+          <form
+            [formGroup]="uploadForm"
+            (ngSubmit)="onUpload()"
+            class="space-y-6"
+          >
+            <!-- File Upload -->
+            <div>
+              <label class="block text-gray-300 mb-2">Audio File</label>
+              <div
+                class="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center"
+              >
+                <i
+                  class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"
+                ></i>
+                <p class="text-gray-400 mb-2">
+                  Drag & drop your audio file here or click to browse
+                </p>
+                <input
+                  type="file"
+                  accept="audio/*"
+                  (change)="onFileSelected($event)"
+                  class="hidden"
+                  #fileInput
+                />
+                <button
+                  type="button"
+                  (click)="fileInput.click()"
+                  class="bg-spotify-green hover:bg-green-600 text-white px-4 py-2 rounded-lg"
+                >
+                  Choose File
+                </button>
+                <p *ngIf="selectedFile" class="text-spotify-green mt-2">
+                  {{ selectedFile.name }}
+                </p>
+              </div>
+            </div>
+
+            <!-- Song Details -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-gray-300 mb-2">Song Title *</label>
+                <input
+                  type="text"
+                  formControlName="title"
+                  class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-spotify-green focus:outline-none"
+                  placeholder="Enter song title"
+                />
+              </div>
+
+              <div>
+                <label class="block text-gray-300 mb-2">Album</label>
+                <input
+                  type="text"
+                  formControlName="album"
+                  class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-spotify-green focus:outline-none"
+                  placeholder="Enter album name"
+                />
+              </div>
+
+              <div>
+                <label class="block text-gray-300 mb-2">Genre *</label>
+                <select
+                  formControlName="genre"
+                  class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-spotify-green focus:outline-none"
+                >
+                  <option value="">Select Genre</option>
+                  <option value="rock">Rock</option>
+                  <option value="pop">Pop</option>
+                  <option value="hip-hop">Hip Hop</option>
+                  <option value="electronic">Electronic</option>
+                  <option value="jazz">Jazz</option>
+                  <option value="classical">Classical</option>
+                  <option value="country">Country</option>
+                  <option value="r&b">R&B</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-gray-300 mb-2">Release Date</label>
+                <input
+                  type="date"
+                  formControlName="releaseDate"
+                  class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-spotify-green focus:outline-none"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-gray-300 mb-2">Description</label>
+              <textarea
+                formControlName="description"
+                rows="4"
+                class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:border-spotify-green focus:outline-none"
+                placeholder="Tell listeners about your song..."
+              ></textarea>
+            </div>
+
+            <!-- Upload Button -->
+            <div class="flex justify-end">
+              <button
+                type="submit"
+                [disabled]="uploadForm.invalid || !selectedFile || isUploading"
+                class="bg-spotify-green hover:bg-green-600 disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-8 py-3 rounded-lg transition-colors"
+              >
+                <i *ngIf="isUploading" class="fas fa-spinner fa-spin mr-2"></i>
+                <i *ngIf="!isUploading" class="fas fa-upload mr-2"></i>
+                {{ isUploading ? "Uploading..." : "Upload Song" }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Analytics Tab -->
+      <div *ngIf="activeTab === 'analytics'" class="space-y-6">
+        <h2 class="text-3xl font-bold text-white mb-6">Analytics</h2>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Chart placeholder -->
+          <div class="bg-spotify-gray p-6 rounded-lg">
+            <h3 class="text-xl font-bold text-white mb-4">Monthly Plays</h3>
+            <div
+              class="h-64 flex items-center justify-center border-2 border-dashed border-gray-600 rounded-lg"
+            >
+              <div class="text-center">
+                <i class="fas fa-chart-line text-4xl text-gray-400 mb-2"></i>
+                <p class="text-gray-400">Chart will be displayed here</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top Songs -->
+          <div class="bg-spotify-gray p-6 rounded-lg">
+            <h3 class="text-xl font-bold text-white mb-4">
+              Top Performing Songs
+            </h3>
+            <div class="space-y-3">
+              <div
+                *ngFor="let song of topSongs"
+                class="flex items-center justify-between p-3 bg-gray-800 rounded-lg"
+              >
+                <div class="flex items-center">
+                  <div
+                    class="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded mr-3 flex items-center justify-center"
+                  >
+                    <i class="fas fa-music text-white text-xs"></i>
+                  </div>
+                  <span class="text-white">{{ song.title }}</span>
+                </div>
+                <span class="text-spotify-green font-bold"
+                  >{{ song.plays }} plays</span
+                >
+              </div>
+              <div
+                *ngIf="topSongs.length === 0"
+                class="text-center py-8 text-gray-400"
+              >
+                <i class="fas fa-chart-bar text-2xl mb-2"></i>
+                <p>No data available yet</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
