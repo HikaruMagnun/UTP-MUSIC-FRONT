@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ApiService } from './api.service';
 import { Router } from '@angular/router';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -54,6 +55,10 @@ export class AuthService {
     }
   }
 
+  registerListener(userData: any): Observable<any> {
+    return this.apiService.registerListener(userData);
+  }
+
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -73,5 +78,14 @@ export class AuthService {
   getCurrentUser(): any {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;
+  }
+
+  loginListener(username: string, password: string): Observable<any> {
+    return this.apiService.loginListener(username, password).pipe(
+      tap((response) => {
+        localStorage.setItem('LOGIN_USER', JSON.stringify(response));
+        this.router.navigate(['/listener/home']);
+      })
+    );
   }
 }

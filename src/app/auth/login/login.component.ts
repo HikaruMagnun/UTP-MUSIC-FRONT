@@ -47,18 +47,33 @@ export class LoginComponent implements OnInit {
 
       const { email, password } = this.loginForm.value;
 
-      this.authService.login(email, password, this.userType).subscribe({
-        next: (response) => {
-          this.isLoading = false;
-          // Navigation is handled by AuthService
-        },
-        error: (error) => {
-          this.isLoading = false;
-          this.errorMessage =
-            error.error?.message ||
-            'Error al iniciar sesión. Verifica tus credenciales.';
-        },
-      });
+      if (this.userType === 'listener') {
+        this.authService.loginListener(email, password).subscribe({
+          next: (response) => {
+            this.isLoading = false;
+            // Navigation is handled by AuthService
+          },
+          error: (error) => {
+            this.isLoading = false;
+            this.errorMessage =
+              error.error?.message ||
+              'Error al iniciar sesión. Verifica tus credenciales.';
+          },
+        });
+      } else {
+        this.authService.login(email, password, this.userType).subscribe({
+          next: (response) => {
+            this.isLoading = false;
+            // Navigation is handled by AuthService
+          },
+          error: (error) => {
+            this.isLoading = false;
+            this.errorMessage =
+              error.error?.message ||
+              'Error al iniciar sesión. Verifica tus credenciales.';
+          },
+        });
+      }
     }
   }
 

@@ -25,12 +25,28 @@ export class ApiService {
     return this.http.post(`${this.baseUrl}${endpoint}`, { email, password });
   }
 
+  loginListener(username: string, password: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.post(
+      `${this.baseUrl}/usuarios/login`,
+      { username: username, password: password },
+      { headers }
+    );
+  }
+
   registerArtist(userData: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/artists/register`, userData);
   }
 
   registerListener(userData: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/listeners/register`, userData);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.post(`${this.baseUrl}/usuarios/register`, userData, {
+      headers,
+    });
   }
 
   // Artist endpoints

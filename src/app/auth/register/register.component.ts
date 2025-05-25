@@ -78,20 +78,24 @@ export class RegisterComponent implements OnInit {
 
       const formData = this.registerForm.value;
 
-      // Remove confirmPassword from the data sent to API
-      const { confirmPassword, ...userData } = formData;
+      // Prepare data for listener registration
+      const listenerData = {
+        nombre: formData.name,
+        password: formData.password,
+        email: formData.email,
+      };
 
-      this.authService.register(userData, this.userType).subscribe({
-        next: (response) => {
+      this.authService.registerListener(listenerData).subscribe({
+        next: (response: any) => {
           this.isLoading = false;
           // Redirect to login after successful registration
-          this.router.navigate(['/login', this.userType], {
+          this.router.navigate(['/login', 'listener'], {
             queryParams: {
               message: 'Cuenta creada exitosamente. Por favor inicia sesión.',
             },
           });
         },
-        error: (error) => {
+        error: (error: any) => {
           this.isLoading = false;
           this.errorMessage =
             error.error?.message ||
