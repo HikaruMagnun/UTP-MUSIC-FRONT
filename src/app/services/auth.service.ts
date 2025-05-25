@@ -29,12 +29,9 @@ export class AuthService {
     );
   }
 
-  register(userData: any, userType: string): Observable<any> {
-    if (userType === 'artist') {
-      return this.apiService.registerArtist(userData);
-    } else {
-      return this.apiService.registerListener(userData);
-    }
+  registerArtista(userData: any): Observable<any> {
+    return this.apiService.registerArtist(userData);
+
   }
 
   registerListener(userData: any): Observable<any> {

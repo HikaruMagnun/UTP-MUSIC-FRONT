@@ -42,7 +42,7 @@ export class ApiService {
   }
 
   registerArtist(userData: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/artists/register`, userData);
+    return this.http.post(`${this.baseUrl}/artistas/register`, userData);
   }
 
   registerListener(userData: any): Observable<any> {

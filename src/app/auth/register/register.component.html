@@ -115,31 +115,70 @@
         <!-- Artist specific fields -->
         <div *ngIf="userType === 'artist'">
           <div class="mb-4">
-            <label for="stageName" class="block text-white font-medium mb-2">
+            <label for="nombreArtistico" class="block text-white font-medium mb-2">
               Nombre Artístico
             </label>
             <input
               type="text"
-              id="stageName"
-              formControlName="stageName"
+              id="nombreArtistico"
+              formControlName="nombreArtistico"
               class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-spotify-green focus:ring-1 focus:ring-spotify-green"
               placeholder="Tu nombre artístico"
             />
+            <div
+              *ngIf="
+                registerForm.get('nombreArtistico')?.invalid &&
+                registerForm.get('nombreArtistico')?.touched
+              "
+              class="text-red-400 text-sm mt-1"
+            >
+              Nombre artístico es requerido
+            </div>
           </div>
+
           <div class="mb-4">
             <label for="bio" class="block text-white font-medium mb-2">
               Biografía (opcional)
             </label>
             <textarea
               id="bio"
-              formControlName="bio"
+              formControlName="biografia"
               rows="3"
               class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-spotify-green focus:ring-1 focus:ring-spotify-green"
               placeholder="Cuéntanos sobre tu música..."
             ></textarea>
           </div>
-          
 
+            <div class="mb-4">
+            <label for="imagenUrl" class="block text-white font-medium mb-2">
+              URL de la Imagen
+            </label>
+            <input
+              type="text"
+              id="imagenUrl"
+              formControlName="imagenUrl"
+              class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-spotify-green focus:ring-1 focus:ring-spotify-green"
+              placeholder="http://example.com/imagen.jpg"
+              (input)="validateImageUrl($event)"
+            />
+            <div *ngIf="imagePreviewUrl" class="mt-2">
+              <img
+                [src]="imagePreviewUrl"
+                alt="Preview"
+                class="w-full h-auto rounded-lg border border-gray-600"
+                (error)="onImageError()"
+              />
+            </div>
+            <div
+              *ngIf="
+                registerForm.get('imagenUrl')?.invalid &&
+                registerForm.get('imagenUrl')?.touched
+              "
+              class="text-red-400 text-sm mt-1"
+            >
+              URL de imagen es requerida
+            </div>
+          </div>
         </div>
 
         <!-- Error Message -->
