@@ -20,31 +20,13 @@ export class AuthService {
     }
   }
 
-  login(email: string, password: string, userType: string): Observable<any> {
-    return new Observable((observer) => {
-      this.apiService.login(email, password, userType).subscribe({
-        next: (response) => {
-          if (response.token) {
-            localStorage.setItem('token', response.token);
-            localStorage.setItem('user', JSON.stringify(response.user));
-            localStorage.setItem('userType', userType);
-            this.currentUserSubject.next(response.user);
-
-            // Redirect based on user type
-            if (userType === 'artist') {
-              this.router.navigate(['/artist/dashboard']);
-            } else {
-              this.router.navigate(['/listener/home']);
-            }
-          }
-          observer.next(response);
-          observer.complete();
-        },
-        error: (error) => {
-          observer.error(error);
-        },
-      });
-    });
+  loginArtista(username: string, password: string): Observable<any> {
+    return this.apiService.loginArtist(username, password).pipe(
+      tap((response) => {
+        localStorage.setItem('LOGIN_ARTISTA', JSON.stringify(response));
+        this.router.navigate(['/artist/dashboard']);
+      })
+    );
   }
 
   register(userData: any, userType: string): Observable<any> {

@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit {
           },
         });
       } else {
-        this.authService.login(email, password, this.userType).subscribe({
+        this.authService.loginArtista(email, password).subscribe({
           next: (response) => {
             this.isLoading = false;
             // Navigation is handled by AuthService

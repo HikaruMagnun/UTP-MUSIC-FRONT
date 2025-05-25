@@ -19,10 +19,15 @@ export class ApiService {
   }
 
   // Authentication endpoints
-  login(email: string, password: string, userType: string): Observable<any> {
-    const endpoint =
-      userType === 'artist' ? '/artists/login' : '/listeners/login';
-    return this.http.post(`${this.baseUrl}${endpoint}`, { email, password });
+  loginArtist(email: string, password: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.post(
+      `${this.baseUrl}/artistas/login`,
+      { email: email, password: password },
+      { headers }
+    );
   }
 
   loginListener(username: string, password: string): Observable<any> {
