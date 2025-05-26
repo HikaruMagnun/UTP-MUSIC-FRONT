@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Playlist } from '../models/playlist.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -84,5 +85,15 @@ export class ApiService {
     return this.http.post(`${this.baseUrl}/songs/upload`, songData, {
       headers,
     });
+  }
+
+  // Playlist endpoints
+  getPlaylistsByUser(userId: number): Observable<Playlist[]> {
+    return this.http.get<Playlist[]>(
+      `${this.baseUrl}/playlists/list-by-user/${userId}`,
+      {
+        headers: this.getHeaders(),
+      }
+    );
   }
 }

@@ -35,7 +35,10 @@
 
     <!-- Playlists section -->
     <div class="playlists">
-      <!-- Playlists will be listed here -->
+      <div class="playlist-item" *ngFor="let playlist of playlists">
+        <mat-icon>queue_music</mat-icon>
+        <span class="playlist-name">{{ playlist.nombre }}</span>
+      </div>
     </div>
   </div>
 

@@ -196,3 +196,36 @@
     cursor: pointer;
   }
 }
+
+.playlists {
+  margin-top: 16px;
+  overflow-y: auto;
+  flex-grow: 1;
+
+  .playlist-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-radius: 4px;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    mat-icon {
+      color: #b3b3b3;
+      font-size: 20px;
+    }
+
+    .playlist-name {
+      color: #b3b3b3;
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
