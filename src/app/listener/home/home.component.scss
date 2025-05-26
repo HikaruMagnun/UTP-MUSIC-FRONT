@@ -1,0 +1,198 @@
+.spotify-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #121212;
+  color: white;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: calc(100vh - 90px);
+  background-color: #000000;
+  padding: 24px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.menu-items {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  &.active {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  mat-icon {
+    color: #b3b3b3;
+  }
+
+  span {
+    font-size: 14px;
+    font-weight: bold;
+    color: #b3b3b3;
+  }
+}
+
+.separator {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 8px 0;
+}
+
+.main-content {
+  margin-left: 240px;
+  padding: 24px;
+  height: calc(100vh - 90px);
+  overflow-y: auto;
+}
+
+.app-info {
+  padding: 32px;
+  text-align: center;
+
+  h1 {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+
+  p {
+    font-size: 18px;
+    color: #b3b3b3;
+  }
+}
+
+.player-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 90px;
+  background-color: #181818;
+  border-top: 1px solid #282828;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.song-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 30%;
+
+  .song-image {
+    width: 56px;
+    height: 56px;
+    background-color: #282828;
+    border-radius: 4px;
+  }
+
+  .song-details {
+    .song-name {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .artist-name {
+      font-size: 12px;
+      color: #b3b3b3;
+    }
+  }
+}
+
+.playback-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 40%;
+
+  .play-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+
+    .play-pause {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: white;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      mat-icon {
+        color: black;
+        font-size: 20px;
+      }
+    }
+  }
+
+  .progress-bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .time {
+      font-size: 12px;
+      color: #b3b3b3;
+      min-width: 40px;
+    }
+
+    .progress-track {
+      flex-grow: 1;
+      height: 4px;
+      background-color: #4d4d4d;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+  }
+}
+
+.volume-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 30%;
+  justify-content: flex-end;
+
+  .mute-button {
+    background: none;
+    border: none;
+    color: #b3b3b3;
+    cursor: pointer;
+  }
+
+  .volume-slider {
+    width: 100px;
+    height: 4px;
+    background-color: #4d4d4d;
+    border-radius: 2px;
+    cursor: pointer;
+  }
+}

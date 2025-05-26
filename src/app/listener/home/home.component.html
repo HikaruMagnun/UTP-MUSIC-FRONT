@@ -1,1 +1,79 @@
-<p>home works!</p>
+<!-- Main container with flex layout -->
+<div class="spotify-container">
+  <!-- Left sidebar -->
+  <div class="sidebar">
+    <!-- Fixed menu items -->
+    <div class="menu-items">
+      <div
+        class="menu-item"
+        [class.active]="router.url === '/listener/home'"
+        (click)="navigateTo('home')"
+      >
+        <mat-icon>home</mat-icon>
+        <span>INICIO</span>
+      </div>
+      <div
+        class="menu-item"
+        [class.active]="router.url === '/listener/search'"
+        (click)="navigateTo('search')"
+      >
+        <mat-icon>search</mat-icon>
+        <span>BUSCAR</span>
+      </div>
+      <div
+        class="menu-item"
+        [class.active]="router.url === '/listener/new-playlist'"
+        (click)="navigateTo('new-playlist')"
+      >
+        <mat-icon>playlist_add</mat-icon>
+        <span>NUEVA PLAYLIST</span>
+      </div>
+    </div>
+
+    <!-- Separator line -->
+    <hr class="separator" />
+
+    <!-- Playlists section -->
+    <div class="playlists">
+      <!-- Playlists will be listed here -->
+    </div>
+  </div>
+
+  <!-- Main content area -->
+  <div class="main-content">
+    <router-outlet></router-outlet>
+  </div>
+
+  <!-- Bottom player bar -->
+  <div class="player-bar">
+    <!-- Left: Song info -->
+    <div class="song-info">
+      <div class="song-image"></div>
+      <div class="song-details">
+        <div class="song-name">Nombre de la canción</div>
+        <div class="artist-name">Nombre del artista</div>
+      </div>
+    </div>
+
+    <!-- Center: Playback controls -->
+    <div class="playback-controls">
+      <div class="play-controls">
+        <button class="play-pause">
+          <mat-icon>play_arrow</mat-icon>
+        </button>
+      </div>
+      <div class="progress-bar">
+        <span class="time">0:00</span>
+        <div class="progress-track"></div>
+      </div>
+    </div>
+
+    <!-- Right: Volume controls -->
+    <div class="volume-controls">
+      <button class="mute-button">
+        <mat-icon>volume_up</mat-icon>
+      </button>
+      <div class="volume-slider"></div>
+    </div>
+  </div>
+</div>
