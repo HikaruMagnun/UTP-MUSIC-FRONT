@@ -96,4 +96,20 @@ export class ApiService {
       }
     );
   }
+
+  // listar canciones de búsqueda por título
+  getSongsBySearchQuery(titulo: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/canciones/search`, {
+      headers: this.getHeaders(),
+      params: { titulo },
+    });
+  }
+
+  // listar canciones de búsqueda por título
+  getArtistBySearchQuery(nombreArtistico: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/artistas/search`, {
+      headers: this.getHeaders(),
+      params: { nombreArtistico },
+    });
+  }
 }
