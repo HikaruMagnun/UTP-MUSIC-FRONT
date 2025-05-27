@@ -139,16 +139,15 @@ export class ApiService {
       },
     });
   }
-
   // Get songs from a specific playlist
   getPlaylistSongs(playlistId: number): Observable<ApiSong[]> {
     return this.http.get<ApiSong[]>(
-      `${this.baseUrl}/playlists/${playlistId}/songs`,
+      `${this.baseUrl}/playlists/list-canciones/${playlistId}`,
       {
         headers: this.getHeaders(),
       }
     );
-  }  // Add song to playlist
+  }// Add song to playlist
   addSongToPlaylist(playlistId: number, songId: number): Observable<any> {
     return this.http.post(
       `${this.baseUrl}/playlists/add-cancion?playlistId=${playlistId}&cancionId=${songId}`,
