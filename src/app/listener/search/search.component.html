@@ -1,5 +1,17 @@
 <!-- Search Bar -->
 <div class="search-container">
+  <!-- Success Message -->
+  <div class="success-message" *ngIf="showSuccessMessage">
+    <mat-icon>check_circle</mat-icon>
+    {{ successMessage }}
+  </div>
+
+  <!-- Error Message -->
+  <div class="error-message" *ngIf="showErrorMessage">
+    <mat-icon>error</mat-icon>
+    {{ errorMessage }}
+  </div>
+
   <h1>BUSCADOR</h1>
   <div class="search-bar">
     <span class="search-icon">
@@ -24,9 +36,9 @@
         <div
           class="song-item"
           *ngFor="let song of filteredSongs; let i = index"
-          (click)="onSongClick(apiSongs[i])"
           (mouseenter)="onMouseEnter($event)"
           (mouseleave)="onMouseLeave($event)"
+          (contextmenu)="onSongRightClick($event, apiSongs[i])"
         >
           <div class="song-image">
             <div
@@ -34,11 +46,45 @@
               [style.backgroundColor]="song.color || '#cccccc'"
             ></div>
           </div>
-          <div class="song-title">
-            {{ song.title }}
+          <div class="song-info" (click)="onSongClick(apiSongs[i])">
+            <div class="song-title">
+              {{ song.title }}
+            </div>
+            <div class="song-duration">
+              {{ song.duration }}
+            </div>
           </div>
-          <div class="song-duration">
-            {{ song.duration }}
+          <div class="song-actions">
+            <button
+              class="play-btn"
+              (click)="onSongClick(apiSongs[i])"
+              title="Reproducir"
+            >
+              <mat-icon>play_arrow</mat-icon>
+            </button>
+            <div class="playlist-dropdown">
+              <button
+                class="add-to-playlist-btn"
+                (click)="onAddToPlaylistClick(i, $event)"
+                title="Agregar a playlist"
+              >
+                <mat-icon>playlist_add</mat-icon>
+              </button>
+              <div class="dropdown-content" *ngIf="showPlaylistDropdown[i]">
+                <div class="dropdown-header">Agregar a playlist</div>
+                <div
+                  class="playlist-option"
+                  *ngFor="let playlist of playlists"
+                  (click)="addToPlaylist(apiSongs[i], playlist, $event)"
+                >
+                  <mat-icon>queue_music</mat-icon>
+                  <span>{{ playlist.nombre }}</span>
+                </div>
+                <div class="playlist-option" *ngIf="playlists.length === 0">
+                  <span>No hay playlists disponibles</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -52,13 +98,62 @@
           <div class="artist-image">
             <img
               [src]="artist.imagenUrl || 'assets/default-artist.jpg'"
-              [alt]="artist.nombreArtistico"
-              [title]="artist.nombreArtistico"
+              [alt]="artist.nombreArtistico + ' - Imagen del artista'"
+              [title]="artist.nombreArtistico + ' - Artista'"
             />
           </div>
           <div class="artist-info">
             <div class="artist-name">{{ artist.nombreArtistico }}</div>
             <div class="artist-bio">{{ artist.biografia }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para seleccionar playlist -->
+  <div
+    class="modal-overlay"
+    *ngIf="showPlaylistModal"
+    (click)="closePlaylistModal()"
+  >
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Agregar a Playlist</h3>
+        <button class="close-btn" (click)="closePlaylistModal()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="selected-song-info" *ngIf="selectedSong">
+          <div class="song-info-header">
+            <div
+              class="song-placeholder"
+              [style.backgroundColor]="'#1db954'"
+            ></div>
+            <div class="song-details">
+              <h4>{{ selectedSong.titulo }}</h4>
+              <p>{{ getArtistName(selectedSong.artistaId) }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="playlist-list">
+          <h4>Selecciona una playlist:</h4>
+          <div
+            class="playlist-item"
+            *ngFor="let playlist of playlists"
+            (click)="addSongToPlaylistFromModal(playlist)"
+          >
+            <mat-icon>queue_music</mat-icon>
+            <span>{{ playlist.nombre }}</span>
+            <mat-icon class="add-icon">add</mat-icon>
+          </div>
+          <div class="no-playlists" *ngIf="playlists.length === 0">
+            <mat-icon>playlist_add</mat-icon>
+            <p>No tienes playlists disponibles</p>
+            <small
+              >Crea una playlist primero para poder agregar canciones</small
+            >
           </div>
         </div>
       </div>

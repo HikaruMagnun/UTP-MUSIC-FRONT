@@ -32,19 +32,24 @@
 
     <!-- Separator line -->
     <hr class="separator" />
-
     <!-- Playlists section -->
     <div class="playlists">
-      <div class="playlist-item" *ngFor="let playlist of playlists">
+      <div
+        class="playlist-item"
+        *ngFor="let playlist of playlists"
+        (click)="selectPlaylist(playlist)"
+        [class.selected]="selectedPlaylist?.id === playlist.id"
+      >
         <mat-icon>queue_music</mat-icon>
         <span class="playlist-name">{{ playlist.nombre }}</span>
       </div>
     </div>
   </div>
-
   <!-- Main content area -->
   <div class="main-content">
-    <router-outlet></router-outlet>
+    <app-playlist-view *ngIf="selectedPlaylist" [playlist]="selectedPlaylist">
+    </app-playlist-view>
+    <router-outlet *ngIf="!selectedPlaylist"></router-outlet>
   </div>
   <!-- Bottom player bar -->
   <div class="player-bar">
@@ -105,6 +110,8 @@
         [value]="volume"
         (input)="onVolumeChange($event)"
         class="volume-slider"
+        aria-label="Control de volumen"
+        title="Control de volumen"
       />
     </div>
   </div>

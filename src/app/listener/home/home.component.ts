@@ -7,11 +7,12 @@ import { MusicService } from '../../services/music.service';
 import { Playlist } from '../../models/playlist.interface';
 import { User } from '../../models/user.interface';
 import { ApiSong } from '../../models/artist.interface';
+import { PlaylistViewComponent } from '../playlist-view/playlist-view.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatIconModule, CommonModule, RouterModule],
+  imports: [MatIconModule, CommonModule, RouterModule, PlaylistViewComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
@@ -23,6 +24,7 @@ export class HomeComponent implements OnInit {
   currentTime: number = 0;
   duration: number = 0;
   volume: number = 1;
+  selectedPlaylist: Playlist | null = null;
 
   constructor(
     public router: Router,
@@ -77,7 +79,55 @@ export class HomeComponent implements OnInit {
     });
   }
   navigateTo(route: string) {
-    this.router.navigate(['/listener/' + route]);
+    if (route === 'new-playlist') {
+      this.createNewPlaylist();
+    } else {
+      this.selectedPlaylist = null; // Clear playlist selection when navigating
+      this.router.navigate(['/listener/' + route]);
+    }
+  }
+
+  createNewPlaylist() {
+    if (!this.currentUser) return;
+
+    // Generate playlist name based on existing count
+    const playlistCount = this.playlists.length;
+    const playlistName = `Nueva playlist ${playlistCount + 1}`;
+
+    const playlistData = {
+      nombre: playlistName,
+      usuarioId: this.currentUser.id,
+      visibilidad: 'PUBLICA',
+    };
+
+    console.log('Creating playlist:', playlistData);
+
+    this.apiService.createPlaylist(playlistData).subscribe({
+      next: (response) => {
+        console.log('Playlist created successfully:', response);
+        // Reload playlists to get the updated list
+        this.loadPlaylists();
+        // Auto-select the newly created playlist after a brief delay
+        setTimeout(() => {
+          const newPlaylist = this.playlists.find(
+            (p) => p.nombre === playlistName
+          );
+          if (newPlaylist) {
+            this.selectPlaylist(newPlaylist);
+          }
+        }, 100);
+      },
+      error: (error) => {
+        console.error('Error creating playlist:', error);
+      },
+    });
+  }
+
+  selectPlaylist(playlist: Playlist) {
+    this.selectedPlaylist = playlist;
+    console.log('Selected playlist:', playlist);
+    // Navigate to show playlist content (we'll implement this view later)
+    // For now, just log the selection
   }
 
   // Music player control methods

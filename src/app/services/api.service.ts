@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 import { Playlist } from '../models/playlist.interface';
+import { ApiSong } from '../models/artist.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -86,7 +89,6 @@ export class ApiService {
       headers,
     });
   }
-
   // Playlist endpoints
   getPlaylistsByUser(userId: number): Observable<Playlist[]> {
     return this.http.get<Playlist[]>(
@@ -95,6 +97,17 @@ export class ApiService {
         headers: this.getHeaders(),
       }
     );
+  }
+
+  // Create new playlist
+  createPlaylist(playlistData: {
+    nombre: string;
+    usuarioId: number;
+    visibilidad: string;
+  }): Observable<any> {
+    return this.http.post(`${this.baseUrl}/playlists/create`, playlistData, {
+      headers: this.getHeaders(),
+    });
   }
 
   // listar canciones de búsqueda por título
@@ -125,5 +138,51 @@ export class ApiService {
         idCancion: idCancion.toString(),
       },
     });
+  }
+
+  // Get songs from a specific playlist
+  getPlaylistSongs(playlistId: number): Observable<ApiSong[]> {
+    return this.http.get<ApiSong[]>(
+      `${this.baseUrl}/playlists/${playlistId}/songs`,
+      {
+        headers: this.getHeaders(),
+      }
+    );
+  }  // Add song to playlist
+  addSongToPlaylist(playlistId: number, songId: number): Observable<any> {
+    return this.http.post(
+      `${this.baseUrl}/playlists/add-cancion?playlistId=${playlistId}&cancionId=${songId}`,
+      null,
+      {
+        headers: this.getHeaders(),
+        observe: 'response'
+      }
+    ).pipe(
+      map(response => {
+        // Considerar éxito cualquier código 2xx
+        if (response.status >= 200 && response.status < 300) {
+          return { success: true, status: response.status, data: response.body };
+        }
+        throw new Error(`Unexpected status: ${response.status}`);
+      }),
+      catchError(error => {
+        console.error('API Error:', error);
+        // Si es un error HTTP pero el status es 2xx, considerarlo éxito
+        if (error.status >= 200 && error.status < 300) {
+          return of({ success: true, status: error.status });
+        }
+        throw error;
+      })
+    );
+  }
+
+  // Remove song from playlist
+  removeSongFromPlaylist(playlistId: number, songId: number): Observable<any> {
+    return this.http.delete(
+      `${this.baseUrl}/playlists/${playlistId}/songs/${songId}`,
+      {
+        headers: this.getHeaders(),
+      }
+    );
   }
 }

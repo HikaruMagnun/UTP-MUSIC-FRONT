@@ -1,0 +1,55 @@
+<div class="playlist-view" *ngIf="playlist">
+  <div class="playlist-header">
+    <div class="playlist-info">
+      <h1 class="playlist-title">{{ playlist.nombre }}</h1>
+      <p class="playlist-meta">
+        <span class="visibility">{{ playlist.visibilidad }}</span>
+        <span class="song-count">{{ songs.length }} canciones</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="playlist-content">
+    <div *ngIf="isLoading" class="loading">
+      <p>Cargando canciones...</p>
+    </div>
+
+    <div *ngIf="!isLoading && songs.length === 0" class="empty-playlist">
+      <mat-icon>queue_music</mat-icon>
+      <h3>Tu playlist está vacía</h3>
+      <p>Busca canciones y agrégalas a tu playlist</p>
+    </div>
+    <div *ngIf="!isLoading && songs.length > 0" class="songs-list">
+      <div class="song-header">
+        <span class="col-index">#</span>
+        <span class="col-title">TÍTULO</span>
+        <span class="col-duration">DURACIÓN</span>
+        <span class="col-actions">ACCIONES</span>
+      </div>
+
+      <div class="song-item" *ngFor="let song of songs; let i = index">
+        <span class="song-index">{{ i + 1 }}</span>
+        <div class="song-title" (click)="onSongClick(song)">
+          <div class="song-name">{{ song.titulo }}</div>
+          <div class="song-artist">Artista ID: {{ song.artistaId }}</div>
+        </div>
+        <span class="song-duration">{{ formatDuration(song.duracion) }}</span>
+        <div class="song-actions">
+          <button
+            class="remove-btn"
+            (click)="removeSongFromPlaylist(song)"
+            title="Eliminar de la playlist"
+          >
+            <mat-icon>remove</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!playlist" class="no-playlist">
+  <mat-icon>playlist_play</mat-icon>
+  <h3>Selecciona una playlist</h3>
+  <p>Elige una playlist del menú lateral para ver su contenido</p>
+</div>
