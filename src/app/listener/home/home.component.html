@@ -46,37 +46,66 @@
   <div class="main-content">
     <router-outlet></router-outlet>
   </div>
-
   <!-- Bottom player bar -->
   <div class="player-bar">
     <!-- Left: Song info -->
     <div class="song-info">
-      <div class="song-image"></div>
-      <div class="song-details">
-        <div class="song-name">Nombre de la canción</div>
-        <div class="artist-name">Nombre del artista</div>
+      <div class="song-image">
+        <div class="song-image-placeholder" *ngIf="currentSong"></div>
+      </div>
+      <div class="song-details" *ngIf="currentSong">
+        <div class="song-name">{{ currentSong.titulo }}</div>
+        <div class="artist-name">Artista ID: {{ currentSong.artistaId }}</div>
+      </div>
+      <div class="song-details" *ngIf="!currentSong">
+        <div class="song-name">Selecciona una canción</div>
+        <div class="artist-name">-</div>
       </div>
     </div>
 
     <!-- Center: Playback controls -->
     <div class="playback-controls">
       <div class="play-controls">
-        <button class="play-pause">
-          <mat-icon>play_arrow</mat-icon>
+        <button
+          class="play-pause"
+          (click)="togglePlayPause()"
+          [disabled]="!currentSong"
+        >
+          <mat-icon>{{ isPlaying ? "pause" : "play_arrow" }}</mat-icon>
         </button>
       </div>
       <div class="progress-bar">
-        <span class="time">0:00</span>
-        <div class="progress-track"></div>
+        <span class="time">{{ formatTime(currentTime) }}</span>
+        <div class="progress-track" (click)="onProgressClick($event)">
+          <div
+            class="progress-fill"
+            [style.width.%]="getProgressPercentage()"
+          ></div>
+        </div>
+        <span class="time">{{ formatTime(duration) }}</span>
       </div>
     </div>
 
     <!-- Right: Volume controls -->
     <div class="volume-controls">
       <button class="mute-button">
-        <mat-icon>volume_up</mat-icon>
+        <mat-icon>{{
+          volume === 0
+            ? "volume_off"
+            : volume < 0.5
+            ? "volume_down"
+            : "volume_up"
+        }}</mat-icon>
       </button>
-      <div class="volume-slider"></div>
+      <input
+        type="range"
+        min="0"
+        max="1"
+        step="0.01"
+        [value]="volume"
+        (input)="onVolumeChange($event)"
+        class="volume-slider"
+      />
     </div>
   </div>
 </div>

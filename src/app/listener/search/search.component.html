@@ -23,27 +23,21 @@
       <div class="songs-list">
         <div
           class="song-item"
-          *ngFor="let song of filteredSongs"
-          style="
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-          "
+          *ngFor="let song of filteredSongs; let i = index"
+          (click)="onSongClick(apiSongs[i])"
+          (mouseenter)="onMouseEnter($event)"
+          (mouseleave)="onMouseLeave($event)"
         >
-          <div
-            class="song-image"
-            style="width: 50px; height: 50px; margin-right: 10px"
-          >
+          <div class="song-image">
             <div
               class="song-image-placeholder"
               [style.backgroundColor]="song.color || '#cccccc'"
-              style="width: 100%; height: 100%"
             ></div>
           </div>
-          <div class="song-title" style="flex: 1; text-align: center">
+          <div class="song-title">
             {{ song.title }}
           </div>
-          <div class="song-duration" style="margin-left: auto">
+          <div class="song-duration">
             {{ song.duration }}
           </div>
         </div>

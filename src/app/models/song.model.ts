@@ -5,6 +5,7 @@ export interface Song {
   duration: string;
   imageUrl: string;
   isExplicit?: boolean;
+  archivoUrl?: string;
   isVideo?: boolean;
   color?: string;
 }
