@@ -111,9 +111,19 @@ export class ApiService {
       params: { nombreArtistico },
     });
   }
-
   // Generate streaming URL for a song
   getSongStreamUrl(archivoUrl: string): string {
     return `${this.baseUrl}/canciones/stream/${archivoUrl}`;
+  }
+
+  // Add song to user's listening history
+  addToHistory(idUsuario: number, idCancion: number): Observable<any> {
+    return this.http.post(`${this.baseUrl}/historial/add`, null, {
+      headers: this.getHeaders(),
+      params: {
+        idUsuario: idUsuario.toString(),
+        idCancion: idCancion.toString(),
+      },
+    });
   }
 }
