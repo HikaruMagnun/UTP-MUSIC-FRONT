@@ -210,5 +210,11 @@ export class ApiService {
           throw error;
         })
       );
+  } // Get songs by artist ID
+  getSongsByArtist(artistId: number): Observable<ApiSong[]> {
+    return this.http.get<ApiSong[]>(`${this.baseUrl}/canciones/by-artist`, {
+      headers: this.getHeaders(),
+      params: { idArtista: artistId.toString() },
+    });
   }
 }
