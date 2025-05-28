@@ -1,10 +1,81 @@
 <div class="content-section music-section">
-  <div class="music-tabs">
-    <button class="tab-btn active">CANCIONES</button>
-    <button class="tab-btn hidden">SENCILLOS</button>
-    <button class="tab-btn hidden">ALBUMS</button>
+  <div class="music-header">
+    <div class="music-tabs">
+      <button class="tab-btn active">CANCIONES</button>
+      <button class="tab-btn hidden">SENCILLOS</button>
+      <button class="tab-btn hidden">ALBUMS</button>
+    </div>
+    <button class="upload-btn" (click)="toggleUploadForm()">
+      <mat-icon>upload</mat-icon>
+      <span>Subir Canción</span>
+    </button>
   </div>
+  <!-- Upload form -->
+  <div class="upload-form" *ngIf="showUploadForm">
+    <div class="form-header">
+      <h3>Subir Nueva Canción</h3>
+      <button class="close-btn" (click)="toggleUploadForm()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
 
+    <div class="form-group">
+      <label for="songName">Nombre de la canción:</label>
+      <input
+        type="text"
+        id="songName"
+        [(ngModel)]="songName"
+        placeholder="Ingrese el nombre de la canción"
+        class="form-control"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="songFile">Archivo de audio:</label>
+      <div class="file-input-container">
+        <input
+          type="file"
+          id="songFile"
+          accept="audio/*"
+          (change)="onFileSelected($event)"
+          class="form-control file-input"
+        />
+        <label for="songFile" class="file-label">
+          <mat-icon>cloud_upload</mat-icon>
+          <span>{{ songFile ? songFile.name : "Seleccionar archivo" }}</span>
+        </label>
+      </div>
+      <small>Formatos aceptados: MP3, WAV, OGG (máx. 20MB)</small>
+    </div>
+
+    <div class="upload-actions">
+      <button class="cancel-btn" (click)="toggleUploadForm()">Cancelar</button>
+      <button
+        class="submit-btn"
+        [disabled]="isUploading || !songName || !songFile"
+        (click)="uploadSong()"
+      >
+        <span *ngIf="!isUploading">Subir Canción</span>
+        <span *ngIf="isUploading">
+          <mat-icon class="rotating">refresh</mat-icon> Subiendo...
+        </span>
+      </button>
+    </div>
+
+    <div class="upload-progress" *ngIf="isUploading">
+      <div class="progress-bar" [style.width.%]="uploadProgress"></div>
+    </div>
+
+    <div class="alert success" *ngIf="successMessage">
+      <mat-icon>check_circle</mat-icon>
+      <span>{{ successMessage }}</span>
+    </div>
+
+    <div class="alert error" *ngIf="errorMessage">
+      <mat-icon>error</mat-icon>
+      <span>{{ errorMessage }}</span>
+    </div>
+  </div>
   <!-- Loading state -->
   <div class="loading-state" *ngIf="isLoading">
     <mat-icon class="rotating">refresh</mat-icon>
@@ -12,7 +83,7 @@
   </div>
 
   <!-- Error state -->
-  <div class="error-state" *ngIf="errorMessage">
+  <div class="error-state" *ngIf="errorMessage && !showUploadForm">
     <mat-icon>error_outline</mat-icon>
     <p>{{ errorMessage }}</p>
   </div>
@@ -38,9 +109,12 @@
   <!-- Empty state -->
   <div
     class="empty-state"
-    *ngIf="!isLoading && !errorMessage && songs.length === 0"
+    *ngIf="!isLoading && !errorMessage && songs.length === 0 && !showUploadForm"
   >
     <mat-icon>music_off</mat-icon>
     <p>No hay canciones disponibles</p>
+    <button class="add-song-btn" (click)="toggleUploadForm()">
+      <mat-icon>add</mat-icon> Agregar canción
+    </button>
   </div>
 </div>

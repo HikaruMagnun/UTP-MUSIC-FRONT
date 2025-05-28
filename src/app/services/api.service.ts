@@ -78,7 +78,6 @@ export class ApiService {
       headers: this.getHeaders(),
     });
   }
-
   uploadSong(songData: FormData): Observable<any> {
     const headers = new HttpHeaders({
       ...(localStorage.getItem('token') && {
@@ -87,6 +86,30 @@ export class ApiService {
     });
     return this.http.post(`${this.baseUrl}/songs/upload`, songData, {
       headers,
+    });
+  }
+  // Subir una nueva canción
+  addSong(
+    nombre: string,
+    duracion: number,
+    idArtista: number,
+    file: File
+  ): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post(`${this.baseUrl}/canciones/add`, formData, {
+      headers: new HttpHeaders({
+        ...(localStorage.getItem('token') && {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        }),
+      }),
+      params: {
+        nombre: nombre,
+        album: '0', // Siempre 0 como se indicó
+        idArtista: idArtista.toString(),
+        duracion: duracion.toString(),
+      },
     });
   }
   // Playlist endpoints
@@ -209,14 +232,15 @@ export class ApiService {
           }
           throw error;
         })
-      );  } // Get songs by artist ID
+      );
+  } // Get songs by artist ID
   getSongsByArtist(artistId: number): Observable<ApiSong[]> {
     return this.http.get<ApiSong[]>(`${this.baseUrl}/canciones/by-artist`, {
       headers: this.getHeaders(),
       params: { idArtista: artistId.toString() },
     });
   }
-  
+
   // Get artist play count by day
   getArtistPlayCountByDay(artistId: number): Observable<PlayCountData[]> {
     return this.http.get<PlayCountData[]>(
