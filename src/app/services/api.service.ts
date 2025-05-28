@@ -147,41 +147,68 @@ export class ApiService {
         headers: this.getHeaders(),
       }
     );
-  }// Add song to playlist
+  } // Add song to playlist
   addSongToPlaylist(playlistId: number, songId: number): Observable<any> {
-    return this.http.post(
-      `${this.baseUrl}/playlists/add-cancion?playlistId=${playlistId}&cancionId=${songId}`,
-      null,
-      {
-        headers: this.getHeaders(),
-        observe: 'response'
-      }
-    ).pipe(
-      map(response => {
-        // Considerar éxito cualquier código 2xx
-        if (response.status >= 200 && response.status < 300) {
-          return { success: true, status: response.status, data: response.body };
+    return this.http
+      .post(
+        `${this.baseUrl}/playlists/add-cancion?playlistId=${playlistId}&cancionId=${songId}`,
+        null,
+        {
+          headers: this.getHeaders(),
+          observe: 'response',
         }
-        throw new Error(`Unexpected status: ${response.status}`);
-      }),
-      catchError(error => {
-        console.error('API Error:', error);
-        // Si es un error HTTP pero el status es 2xx, considerarlo éxito
-        if (error.status >= 200 && error.status < 300) {
-          return of({ success: true, status: error.status });
-        }
-        throw error;
-      })
-    );
-  }
-
-  // Remove song from playlist
+      )
+      .pipe(
+        map((response) => {
+          // Considerar éxito cualquier código 2xx
+          if (response.status >= 200 && response.status < 300) {
+            return {
+              success: true,
+              status: response.status,
+              data: response.body,
+            };
+          }
+          throw new Error(`Unexpected status: ${response.status}`);
+        }),
+        catchError((error) => {
+          console.error('API Error:', error);
+          // Si es un error HTTP pero el status es 2xx, considerarlo éxito
+          if (error.status >= 200 && error.status < 300) {
+            return of({ success: true, status: error.status });
+          }
+          throw error;
+        })
+      );
+  } // Remove song from playlist
   removeSongFromPlaylist(playlistId: number, songId: number): Observable<any> {
-    return this.http.delete(
-      `${this.baseUrl}/playlists/${playlistId}/songs/${songId}`,
-      {
-        headers: this.getHeaders(),
-      }
-    );
+    return this.http
+      .delete(
+        `${this.baseUrl}/playlists/remove-cancion?playlistId=${playlistId}&cancionId=${songId}`,
+        {
+          headers: this.getHeaders(),
+          observe: 'response',
+        }
+      )
+      .pipe(
+        map((response) => {
+          // Consider any 2xx status code as success
+          if (response.status >= 200 && response.status < 300) {
+            return {
+              success: true,
+              status: response.status,
+              data: response.body,
+            };
+          }
+          throw new Error(`Unexpected status: ${response.status}`);
+        }),
+        catchError((error) => {
+          console.error('API Error:', error);
+          // If it's an HTTP error but the status is 2xx, consider it success
+          if (error.status >= 200 && error.status < 300) {
+            return of({ success: true, status: error.status });
+          }
+          throw error;
+        })
+      );
   }
 }

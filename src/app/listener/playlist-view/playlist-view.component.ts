@@ -40,7 +40,8 @@ export class PlaylistViewComponent implements OnInit, OnChanges {
     this.isLoading = true;
     this.apiService.getPlaylistSongs(this.playlist.id).subscribe({
       next: (songs: ApiSong[]) => {
-        this.songs = songs;
+        console.log('Loaded playlist songs:', songs);
+        this.songs = songs || [];
         this.isLoading = false;
       },
       error: (error: any) => {
@@ -67,12 +68,21 @@ export class PlaylistViewComponent implements OnInit, OnChanges {
     this.apiService
       .removeSongFromPlaylist(this.playlist.id, song.id)
       .subscribe({
-        next: () => {
-          console.log('Song removed from playlist successfully');
-          this.loadPlaylistSongs(); // Reload playlist songs
+        next: (response) => {
+          console.log('Song removed from playlist successfully:', response);
+          // Remove the song from the local array immediately for instant UI update
+          this.songs = this.songs.filter((s) => s.id !== song.id);
+          // Also reload from server to ensure consistency
+          this.loadPlaylistSongs();
         },
         error: (error: any) => {
           console.error('Error removing song from playlist:', error);
+          // Check if it's actually a successful response but treated as error
+          if (error.status >= 200 && error.status < 300) {
+            console.log('Removal was actually successful despite error status');
+            this.songs = this.songs.filter((s) => s.id !== song.id);
+            this.loadPlaylistSongs();
+          }
         },
       });
   }
