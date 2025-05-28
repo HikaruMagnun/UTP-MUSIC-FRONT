@@ -1,0 +1,28 @@
+<div class="content-section recent-stats">
+  <div class="stats-container">
+    <div class="stats-column">
+      <h1 class="stats-title">{{ recentStats.oyentes }} OYENTES</h1>
+      <h1 class="stats-title">
+        {{ recentStats.reproducciones }} REPRODUCCIONES
+      </h1>
+      <h1 class="stats-title">{{ recentStats.seguidores }} SEGUIDORES</h1>
+      <p class="time-period">{{ recentStats.periodo }}</p>
+    </div>
+
+    <div class="stats-divider"></div>
+
+    <div class="stats-column highlight">
+      <p class="listening-now">
+        ... {{ overallStats.escuchandoAhora }} personas escuchando ahora
+      </p>
+      <h1 class="stats-title highlight">{{ overallStats.oyentes }} OYENTES</h1>
+      <h1 class="stats-title highlight">
+        {{ overallStats.reproducciones }} REPRODUCCIONES
+      </h1>
+      <h1 class="stats-title highlight">
+        {{ overallStats.seguidores }} SEGUIDORES
+      </h1>
+      <p class="time-period highlight">{{ overallStats.periodo }}</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,70 @@
+/* Base styling */
+:host {
+  display: block;
+}
+
+.dashboard-container {
+  background-color: #121212;
+  color: white;
+  min-height: 100vh;
+  font-family: "Roboto", sans-serif;
+}
+
+/* Header and Navigation */
+.header {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background-color: #121212;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.menu-button {
+  cursor: pointer;
+  margin-right: 1rem;
+}
+
+.artist-profile {
+  display: flex;
+  align-items: center;
+  margin-right: 2rem;
+}
+
+.artist-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.5rem;
+}
+
+.artist-label {
+  font-weight: bold;
+}
+
+.main-nav {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1.5rem;
+  color: white;
+  text-decoration: none;
+  margin: 0 1rem;
+}
+
+.nav-item.active {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+}
+
+.nav-item mat-icon {
+  margin-right: 0.5rem;
+}

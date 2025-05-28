@@ -1,73 +1,43 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  ReactiveFormsModule,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
+import { HomeComponent } from '../home/home.component';
+import { MusicComponent } from '../music/music.component';
+import { AudienceComponent } from '../audience/audience.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    MatIconModule,
+    HomeComponent,
+    MusicComponent,
+    AudienceComponent,
+  ],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss',
+  styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent {
-  // UI state
-  activeTab: 'overview' | 'music' | 'upload' | 'analytics' = 'overview';
-  isUploading = false;
-  selectedFile: File | null = null;
+export class DashboardComponent implements OnInit {
+  activeTab: 'home' | 'music' | 'audience' = 'home';
 
-  // Data
-  user = { name: 'Artist' };
-  totalSongs = 0;
-  totalPlays = 0;
-  totalLikes = 0;
-  followers = 0;
-  songs: any[] = [];
-  topSongs: any[] = [];
+  constructor(private router: Router) {}
 
-  // Upload form
-  uploadForm: FormGroup;
-
-  constructor(private fb: FormBuilder) {
-    this.uploadForm = this.fb.group({
-      title: ['', Validators.required],
-      album: [''],
-      genre: ['', Validators.required],
-      releaseDate: [''],
-      description: [''],
-    });
+  ngOnInit(): void {
+    // Initialization code
   }
 
-  setActiveTab(tab: 'overview' | 'music' | 'upload' | 'analytics') {
+  changeTab(tab: 'home' | 'music' | 'audience'): void {
     this.activeTab = tab;
   }
 
-  logout() {
-    // TODO: Integrate with AuthService
-    localStorage.clear();
-    window.location.href = '/';
-  }
+  logout(): void {
+    // Clear local storage
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
 
-  onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
-    }
-  }
-
-  onUpload() {
-    if (this.uploadForm.invalid || !this.selectedFile) return;
-    this.isUploading = true;
-    // TODO: Integrate with API service
-    setTimeout(() => {
-      this.isUploading = false;
-      this.uploadForm.reset();
-      this.selectedFile = null;
-      // TODO: Show success feedback
-    }, 1500);
+    // Navigate to home
+    this.router.navigate(['/']);
   }
 }

@@ -1,0 +1,77 @@
+/* Content Section */
+.content-section {
+  padding: 2rem;
+}
+
+/* Music Section */
+.music-tabs {
+  display: flex;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  color: #999;
+  font-weight: bold;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.tab-btn.active {
+  color: white;
+  border-bottom: 2px solid white;
+}
+
+.tab-btn.hidden {
+  display: none;
+}
+
+.songs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.song-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto auto auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.song-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.song-cover {
+  width: 50px;
+  height: 50px;
+  border-radius: 4px;
+  background-color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.song-title {
+  font-weight: bold;
+}
+
+.song-duration,
+.song-date,
+.song-plays {
+  color: #999;
+}
+
+.song-action {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}

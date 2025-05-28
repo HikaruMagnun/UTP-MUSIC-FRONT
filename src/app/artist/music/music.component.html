@@ -1,0 +1,22 @@
+<div class="content-section music-section">
+  <div class="music-tabs">
+    <button class="tab-btn active">CANCIONES</button>
+    <button class="tab-btn hidden">SENCILLOS</button>
+    <button class="tab-btn hidden">ALBUMS</button>
+  </div>
+
+  <div class="songs-list">
+    <div class="song-item" *ngFor="let song of mockSongs">
+      <div class="song-cover">
+        <mat-icon>album</mat-icon>
+      </div>
+      <div class="song-title">{{ song.title }}</div>
+      <div class="song-duration">{{ song.duration }}</div>
+      <div class="song-date">{{ song.date }}</div>
+      <div class="song-plays">{{ song.plays }}</div>
+      <button class="song-action">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
