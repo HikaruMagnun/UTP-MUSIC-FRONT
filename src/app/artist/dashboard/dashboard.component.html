@@ -6,10 +6,18 @@
       <mat-icon>menu</mat-icon>
     </div>
     <div class="artist-profile">
-      <div class="artist-avatar">
-        <mat-icon>person</mat-icon>
+      <div class="artist-avatar" *ngIf="artist && artist.imagenUrl">
+        <img [src]="artist.imagenUrl" alt="Artist Photo" class="artist-image" />
       </div>
-      <span class="artist-label">ARTISTA</span>
+      <div class="artist-avatar" *ngIf="!artist?.imagenUrl">
+        <span class="artist-initials">{{ artistInitials }}</span>
+      </div>
+      <span class="artist-label">{{
+        artist?.nombreArtistico || "ARTISTA"
+      }}</span>
+    </div>
+    <div class="logout-button" (click)="logout()">
+      <mat-icon>logout</mat-icon>
     </div>
     <nav class="main-nav">
       <a
