@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Playlist } from '../models/playlist.interface';
-import { ApiSong } from '../models/artist.interface';
+import { ApiSong, PlayCountData } from '../models/artist.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -209,12 +209,22 @@ export class ApiService {
           }
           throw error;
         })
-      );
-  } // Get songs by artist ID
+      );  } // Get songs by artist ID
   getSongsByArtist(artistId: number): Observable<ApiSong[]> {
     return this.http.get<ApiSong[]>(`${this.baseUrl}/canciones/by-artist`, {
       headers: this.getHeaders(),
       params: { idArtista: artistId.toString() },
     });
+  }
+  
+  // Get artist play count by day
+  getArtistPlayCountByDay(artistId: number): Observable<PlayCountData[]> {
+    return this.http.get<PlayCountData[]>(
+      `${this.baseUrl}/historial/artist-count-by-day`,
+      {
+        headers: this.getHeaders(),
+        params: { idArtista: artistId.toString() },
+      }
+    );
   }
 }

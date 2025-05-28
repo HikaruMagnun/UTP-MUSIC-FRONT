@@ -18,3 +18,8 @@ export interface ApiSong {
   artistaId: number;
   albumId: number | null;
 }
+
+export interface PlayCountData {
+  fecha: [number, number, number]; // [year, month, day]
+  conteo: number;
+}

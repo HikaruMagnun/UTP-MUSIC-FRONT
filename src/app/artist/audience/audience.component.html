@@ -8,17 +8,30 @@
   <div class="stats-summary">
     <div class="growth-stat">
       <mat-icon class="up-icon">arrow_upward</mat-icon>
-      <span
-        >{{ growthPercentage }}% mas reproducciones desde el ultimo mes</span
-      >
+      <span>{{ growthPercentage }}% mas reproducciones desde el ultimo mes</span>
     </div>
 
     <div class="stats-chart">
-      <!-- Placeholder for chart -->
-      <div class="chart-placeholder">
-        <mat-icon class="chart-icon">insert_chart</mat-icon>
-        <p>Gráfico de estadísticas</p>
+      <!-- Estado de carga -->
+      <div class="chart-placeholder" *ngIf="isLoading">
+        <mat-icon class="chart-icon">hourglass_empty</mat-icon>
+        <p>Cargando datos...</p>
       </div>
+      
+      <!-- Estado de error -->
+      <div class="chart-placeholder" *ngIf="errorMessage && !isLoading">
+        <mat-icon class="chart-icon">error_outline</mat-icon>
+        <p>{{ errorMessage }}</p>
+      </div>
+      
+      <!-- Estado vacío -->
+      <div class="chart-placeholder" *ngIf="!isLoading && !errorMessage && playCountData.length === 0">
+        <mat-icon class="chart-icon">insert_chart</mat-icon>
+        <p>No hay datos de reproducciones disponibles</p>
+      </div>
+      
+      <!-- Canvas del gráfico -->
+      <canvas #chartCanvas *ngIf="!isLoading && !errorMessage && playCountData.length > 0"></canvas>
     </div>
 
     <div class="stats-highlights">
